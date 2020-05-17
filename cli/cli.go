@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"fmt"
 	"log"
+
+	"github.com/axiiomatic/reddit-downloader/downloader"
 )
 
 // Command takes a name and datatype for the command
@@ -35,5 +36,6 @@ func (r *Cli) ParseArgs(args []string) []string {
 // Init takes os.args and initalizes the cli
 func (r *Cli) Init(args []string) {
 	values := r.ParseArgs(args)
-	fmt.Println(values)
+	downloader.MakeRequestForReddit(values[0], 25)
+
 }
