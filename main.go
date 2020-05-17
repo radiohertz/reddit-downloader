@@ -12,6 +12,6 @@ func main() {
 
 	li := cli.Cli{Commands: []cli.Command{c1}}
 
-	li.ParseArgs(os.Args)
+	li.Init(os.Args)
 
 }
