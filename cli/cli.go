@@ -37,5 +37,4 @@ func (r *Cli) ParseArgs(args []string) []string {
 func (r *Cli) Init(args []string) {
 	values := r.ParseArgs(args)
 	downloader.MakeRequestForReddit(values[0], 25)
-
 }
