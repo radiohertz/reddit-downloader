@@ -113,13 +113,11 @@ func downloadImage(url string) (bool, error) {
 		log.Fatal("Cannot download image")
 	}
 
-	w, e := io.Copy(file, resp.Body)
+	_, e := io.Copy(file, resp.Body)
 
 	if e != nil {
 		log.Fatal("ok")
 	}
-
-	fmt.Println(w)
 	fmt.Println("image written to : ", fileName)
 	wg.Done()
 
