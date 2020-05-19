@@ -4,6 +4,6 @@
 
 ### Usage
 
-```bash
-	$dave ./reddit-dl --subr dankmemes
+```
+./reddit-downloader --subr dankmemes
 ```
