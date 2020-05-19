@@ -3,10 +3,17 @@ package downloader
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"strings"
+	"sync"
+	"time"
 )
+
+var wg sync.WaitGroup
 
 const (
 	ENDPOINT = "https://www.reddit.com/r/"
@@ -38,6 +45,10 @@ type Data struct {
 
 func buildEndpoint(subr string, limit int) string {
 	return fmt.Sprintf("%s%s%s%s%d", ENDPOINT, subr, ".json?", "limit=", limit)
+}
+
+func getImageLink(url string) string {
+	return strings.Replace(url, "amp;", "", 1)
 }
 
 func MakeRequestForReddit(subreddit string, limit int) {
@@ -77,6 +88,40 @@ func MakeRequestForReddit(subreddit string, limit int) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%T", need.Data.Children[0].Data.Preview.Images)
+	for _, v := range need.Data.Children {
+		wg.Add(1)
+		f := getImageLink(v.Data.Preview.Images[0].Source.URL)
+		go downloadImage(f)
+	}
 
+	wg.Wait()
+}
+
+func downloadImage(url string) (bool, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+		log.Fatal("Cannot download image")
+	}
+	defer resp.Body.Close()
+	fileName := fmt.Sprintf("%s%s", "/home/dave/Pictures/memes/photo-", time.Now())
+
+	file, err := os.Create(fileName)
+
+	if err != nil {
+		log.Fatal(err)
+		log.Fatal("Cannot download image")
+	}
+
+	w, e := io.Copy(file, resp.Body)
+
+	if e != nil {
+		log.Fatal("ok")
+	}
+
+	fmt.Println(w)
+	fmt.Println("image written to : ", fileName)
+	wg.Done()
+
+	return true, nil
 }
