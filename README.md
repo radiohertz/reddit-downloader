@@ -5,5 +5,5 @@
 ### Usage
 
 ```
-./reddit-downloader --subr dankmemes
+./reddit-downloader --subr [name] --limit [number of images to download]
 ```
