@@ -2,6 +2,7 @@ package cli
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/axiiomatic/reddit-downloader/downloader"
 )
@@ -18,23 +19,52 @@ type Cli struct {
 }
 
 // ParseArgs takes in os.Args and parses the system args
-func (r *Cli) ParseArgs(args []string) []string {
+func (r *Cli) ParseArgs(args []string) []Command {
 	requiredArgs := args[1:]
 
 	if !(len(requiredArgs) > 0) {
 		log.Fatal("No arguments were provided")
 	}
 
-	subr := requiredArgs[1]
+	for i, v := range requiredArgs {
+		if i%2 == 1 {
+			continue
+		}
 
-	// limit := requiredArgs[3]
+		if i == 0 && v != "--subr" {
+			log.Fatal("First argument should be --subr _subredditname_")
+		}
 
-	return []string{subr}
+		r.Commands = append(r.Commands, Command{
+			Name:  v,
+			Value: requiredArgs[i+1],
+		})
+	}
+
+	return r.Commands
 
 }
 
 // Init takes os.args and initalizes the cli
 func (r *Cli) Init(args []string) {
 	values := r.ParseArgs(args)
-	downloader.MakeRequestForReddit(values[0], 25)
+
+	limit := 25
+
+	if len(values) > 1 {
+		l, _ := strconv.ParseInt(values[1].Value, 10, 32)
+
+		if l < 0 || l > 50 {
+			log.Println("Limit cannot be less than 0 or greater than 50.Defaulting to 25")
+			limit = 25
+		} else {
+			limit = int(l)
+		}
+
+	}
+
+	subr := values[0].Value
+
+	downloader.MakeRequestForReddit(subr, limit)
+
 }

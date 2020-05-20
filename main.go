@@ -14,9 +14,7 @@ func main() {
 
 	start := time.Now()
 
-	c1 := cli.Command{Name: "subr", Value: "string"}
-
-	li := cli.Cli{Commands: []cli.Command{c1}}
+	li := cli.Cli{Commands: []cli.Command{}}
 
 	li.Init(os.Args)
 
