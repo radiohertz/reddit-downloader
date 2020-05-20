@@ -53,6 +53,8 @@ func getImageLink(url string) string {
 
 // MakeRequestForReddit takes in subreddit name and number of images to download
 func MakeRequestForReddit(subreddit string, limit int) {
+	createRequiredFolders(subreddit)
+
 	uriString := buildEndpoint(subreddit, limit)
 
 	client := &http.Client{}
@@ -98,6 +100,22 @@ func MakeRequestForReddit(subreddit string, limit int) {
 	wg.Wait()
 }
 
+func createRequiredFolders(sub string) {
+	if exists := checkIfDirExists("memes"); !exists {
+		done := createDir("memes/")
+		if !done {
+			log.Fatal("Failed to create folder")
+		}
+	}
+	path := fmt.Sprintf("%s%s", "memes/", sub)
+	if exists := checkIfDirExists(path); !exists {
+		done := createDir(path)
+		if !done {
+			log.Fatal("Failed to create folder")
+		}
+	}
+}
+
 func downloadImage(url string, sub string) (bool, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -106,27 +124,9 @@ func downloadImage(url string, sub string) (bool, error) {
 	}
 	defer resp.Body.Close()
 
-	if exists := checkIfDirExists("memes"); !exists {
-		done := createDir("memes")
-		if !done {
-			fmt.Println("in create memes")
-			log.Fatal("Failed to create folder")
-		}
-	}
-
-	path := fmt.Sprintf("%s%s", "memes/", sub)
-
-	if exists := checkIfDirExists(path); !exists {
-		done := createDir(path)
-		if !done {
-			fmt.Println("in folderpath")
-			log.Fatal("Failed to create folder")
-		}
-	}
-
 	homeDir, _ := os.UserHomeDir()
 
-	fileName := fmt.Sprintf("%s%s%s%s%s", homeDir, "/Pictures/memes/", sub, "/", time.Now())
+	fileName := fmt.Sprintf("%s%s%s%s%d", homeDir, "/Pictures/memes/", sub, "/", time.Now().Nanosecond())
 
 	file, err := os.Create(fileName)
 
@@ -164,6 +164,7 @@ func createDir(folder string) bool {
 	path := fmt.Sprintf("%s%s%s", homeDir, "/Pictures/", folder)
 
 	if err := os.Mkdir(path, 0755); err != nil {
+		fmt.Println(err)
 		return false
 	}
 	return true
