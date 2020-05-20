@@ -1,4 +1,4 @@
-# Reddit-Downloader
+# Reddit-image-downloader
 
 (re)written in go.
 
