@@ -51,6 +51,7 @@ func getImageLink(url string) string {
 	return strings.Replace(url, "amp;", "", 1)
 }
 
+// MakeRequestForReddit takes in subreddit name and number of images to download
 func MakeRequestForReddit(subreddit string, limit int) {
 	uriString := buildEndpoint(subreddit, limit)
 
@@ -105,8 +106,8 @@ func downloadImage(url string, sub string) (bool, error) {
 	}
 	defer resp.Body.Close()
 
-	if exists := CheckIfDirExists("memes"); !exists {
-		done := CreateDir("memes")
+	if exists := checkIfDirExists("memes"); !exists {
+		done := createDir("memes")
 		if !done {
 			fmt.Println("in create memes")
 			log.Fatal("Failed to create folder")
@@ -115,8 +116,8 @@ func downloadImage(url string, sub string) (bool, error) {
 
 	path := fmt.Sprintf("%s%s", "memes/", sub)
 
-	if exists := CheckIfDirExists(path); !exists {
-		done := CreateDir(path)
+	if exists := checkIfDirExists(path); !exists {
+		done := createDir(path)
 		if !done {
 			fmt.Println("in folderpath")
 			log.Fatal("Failed to create folder")
@@ -145,7 +146,7 @@ func downloadImage(url string, sub string) (bool, error) {
 	return true, nil
 }
 
-func CheckIfDirExists(folder string) bool {
+func checkIfDirExists(folder string) bool {
 
 	homeDir, _ := os.UserHomeDir()
 
@@ -157,7 +158,7 @@ func CheckIfDirExists(folder string) bool {
 	return true
 }
 
-func CreateDir(folder string) bool {
+func createDir(folder string) bool {
 
 	homeDir, _ := os.UserHomeDir()
 	path := fmt.Sprintf("%s%s%s", homeDir, "/Pictures/", folder)
