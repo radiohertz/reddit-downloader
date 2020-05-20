@@ -13,6 +13,8 @@ type Command struct {
 	Value string
 }
 
+const LIMIT = 25
+
 // Cli initializes the arguments required for the app
 type Cli struct {
 	Commands []Command
@@ -49,14 +51,14 @@ func (r *Cli) ParseArgs(args []string) []Command {
 func (r *Cli) Init(args []string) {
 	values := r.ParseArgs(args)
 
-	limit := 25
+	limit := LIMIT
 
 	if len(values) > 1 {
 		l, _ := strconv.ParseInt(values[1].Value, 10, 32)
 
 		if l < 0 || l > 50 {
 			log.Println("Limit cannot be less than 0 or greater than 50.Defaulting to 25")
-			limit = 25
+			limit = LIMIT
 		} else {
 			limit = int(l)
 		}
