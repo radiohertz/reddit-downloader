@@ -118,7 +118,7 @@ func createRequiredFolders(sub string) {
 	}
 }
 
-func downloadImage(url string, sub string, wg *sync.WaitGroup) (bool, error) {
+func downloadImage(url string, sub string, wg *sync.WaitGroup) {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -144,8 +144,6 @@ func downloadImage(url string, sub string, wg *sync.WaitGroup) (bool, error) {
 	}
 	fmt.Println("image written to : ", fileName)
 	wg.Done()
-
-	return true, nil
 }
 
 func checkIfDirExists(folder string) bool {
