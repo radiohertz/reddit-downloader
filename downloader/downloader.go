@@ -57,7 +57,9 @@ func MakeRequestForReddit(subreddit string, limit int) {
 
 	uriString := buildEndpoint(subreddit, limit)
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 5,
+	}
 
 	req, err := http.NewRequest("GET", uriString, nil)
 

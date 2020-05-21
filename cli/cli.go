@@ -24,7 +24,7 @@ type Cli struct {
 func (r *Cli) ParseArgs(args []string) []Command {
 	requiredArgs := args[1:]
 
-	if !(len(requiredArgs) > 0) {
+	if len(requiredArgs) == 0 {
 		log.Fatal("No arguments were provided")
 	}
 
