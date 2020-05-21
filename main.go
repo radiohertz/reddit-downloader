@@ -10,8 +10,6 @@ import (
 
 func main() {
 
-	time.Now().Nanosecond()
-
 	start := time.Now()
 
 	li := cli.Cli{Commands: []cli.Command{}}
