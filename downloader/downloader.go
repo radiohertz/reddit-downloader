@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-var wg sync.WaitGroup
-
 const (
 	ENDPOINT = "https://www.reddit.com/r/"
 	LIMIT    = 25
@@ -93,10 +91,12 @@ func MakeRequestForReddit(subreddit string, limit int) {
 		log.Fatal(err)
 	}
 
+	var wg sync.WaitGroup
+
 	for _, v := range need.Data.Children {
 		wg.Add(1)
 		f := getImageLink(v.Data.Preview.Images[0].Source.URL)
-		go downloadImage(f, subreddit)
+		go downloadImage(f, subreddit, &wg)
 	}
 
 	wg.Wait()
@@ -118,7 +118,7 @@ func createRequiredFolders(sub string) {
 	}
 }
 
-func downloadImage(url string, sub string) (bool, error) {
+func downloadImage(url string, sub string, wg *sync.WaitGroup) (bool, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
