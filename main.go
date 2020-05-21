@@ -16,6 +16,6 @@ func main() {
 
 	li.Init(os.Args)
 
-	log.Println("took ", time.Since(start))
+	log.Println("took", time.Since(start).Seconds(), "to download.")
 
 }
