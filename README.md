@@ -4,8 +4,14 @@
 
 ### Usage
 
+For unix/linux:
 ```
-./reddit-downloader --subr [name] --limit [number of images to download]
+./reddit-dl --subr [name] --limit [number of images to download]
 ```
 
-Pictures will be stored in $Home/Pictures/memes
+For windows:
+```
+reddit-downloader.exe --subr [name] --limit [number of images to download]
+```
+
+Pictures will be stored in $HOME/Pictures/memes
