@@ -165,7 +165,7 @@ func createDir(folder string) bool {
 	homeDir, _ := os.UserHomeDir()
 	path := fmt.Sprintf("%s%s%s", homeDir, "/Pictures/", folder)
 
-	if err := os.Mkdir(path, 0755); err != nil {
+	if err := os.MkdirAll(path, 0755); err != nil {
 		fmt.Println(err)
 		return false
 	}
