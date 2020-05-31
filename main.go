@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/axiiomatic/reddit-downloader/cli"
+	"github.com/darkmtr/reddit-downloader/cli"
 )
 
 func main() {
