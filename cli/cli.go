@@ -4,7 +4,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/axiiomatic/reddit-downloader/downloader"
+	"github.com/darkmtr/reddit-downloader/downloader"
 )
 
 // Command takes a name and datatype for the command
