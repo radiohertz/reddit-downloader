@@ -103,12 +103,6 @@ func MakeRequestForReddit(subreddit string, limit int) {
 }
 
 func createRequiredFolders(sub string) {
-	if exists := checkIfDirExists("memes"); !exists {
-		done := createDir("memes/")
-		if !done {
-			log.Fatal("Failed to create folder")
-		}
-	}
 	path := fmt.Sprintf("%s%s", "memes/", sub)
 	if exists := checkIfDirExists(path); !exists {
 		done := createDir(path)
@@ -163,7 +157,7 @@ func createDir(folder string) bool {
 	homeDir, _ := os.UserHomeDir()
 	path := fmt.Sprintf("%s%s%s", homeDir, "/Pictures/", folder)
 
-	if err := os.Mkdir(path, 0755); err != nil {
+	if err := os.MkdirAll(path, 0755); err != nil {
 		fmt.Println(err)
 		return false
 	}
