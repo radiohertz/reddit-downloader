@@ -103,12 +103,6 @@ func MakeRequestForReddit(subreddit string, limit int) {
 }
 
 func createRequiredFolders(sub string) {
-	if exists := checkIfDirExists("memes"); !exists {
-		done := createDir("memes/")
-		if !done {
-			log.Fatal("Failed to create folder")
-		}
-	}
 	path := fmt.Sprintf("%s%s", "memes/", sub)
 	if exists := checkIfDirExists(path); !exists {
 		done := createDir(path)
